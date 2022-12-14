@@ -38,15 +38,7 @@ def main(filename):
     while True:
         # rock drops from col 500
         # get the vertical most rock in that column
-        max_rock = None
-        for r in rocks:
-            if r[0] == 500:
-                if max_rock is None or r[1] < max_rock[1]:
-                    max_rock = r
-        if max_rock is None:
-            break
-
-        new_rock_pos = (max_rock[0], max_rock[1]-1)
+        new_rock_pos = (500, 0)
         moved = True
         while moved:
             (new_rock_pos, moved) = move_down(
