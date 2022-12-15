@@ -66,9 +66,6 @@ def main(filename):
             x = blocked_ys[y][0][1]+1
             print(x*4000000+y)
 
-            # for every sensor that has a shadow that overlaps that row
-            # add overlap to set
-
 
 if __name__ == "__main__":
     main(argv[1])
