@@ -23,7 +23,9 @@ def main(filename):
         curr = q.pop(0)
         max_pressure = max(curr[2], max_pressure)
 
-        memoized_open = tuple([curr[0]] + sorted(list(curr[3])))
+        # memoized_open = tuple([curr[0]] + sorted(list(curr[3])))
+        # memoized_open = (curr[0], curr[1], len(curr[3]))
+        memoized_open = (curr[0], curr[1], len(curr[3]))
         if len(memoized_open) > 0 and memoized_open in memo and memo[memoized_open] >= curr[2]:
             continue
         memo[memoized_open] = curr[2]

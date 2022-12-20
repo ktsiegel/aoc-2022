@@ -21,12 +21,10 @@ def main(filename):
                 if nums[j][1] == i:
                     num = nums.pop(j)
                     new_idx = j + (num[0])
-                    if new_idx < 0:
+                    if new_idx < 0 or new_idx > len(input)-1:
                         new_idx %= len(input)-1
                     elif new_idx == 0:
                         new_idx = len(input)-1
-                    elif new_idx > len(input)-1:
-                        new_idx %= len(input)-1
 
                     nums.insert(new_idx, num)
                     break
