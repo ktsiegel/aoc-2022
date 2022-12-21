@@ -44,7 +44,7 @@ def main(filename):
         max_geodes = 0
         while len(q) > 0:
             (ts, [ore_robots, clay_robots, obsidian_robots, geode_robots],
-             [ore, clay, obsidian, geode]) = q.pop(0)
+             [ore, clay, obsidian, geode]) = q.pop(-1)
 
             if ts == 24:
                 max_geodes = max(max_geodes, geode)
@@ -76,10 +76,10 @@ def main(filename):
             new_geode = geode + geode_robots
 
             # Decide whether to spend materials to build a new robot
-            if f.ore_cost <= ore and ore_robots < clay_robots + obsidian_robots + 3:
+            if f.ore_cost <= ore:
                 q.append((ts+1, [ore_robots+1, clay_robots, obsidian_robots, geode_robots],
                           [new_ore-f.ore_cost, new_clay, new_obsidian, new_geode]))
-            if f.clay_cost <= ore and clay < highest_clay_cost + 5:
+            if f.clay_cost <= ore:
                 q.append((ts+1, [ore_robots, clay_robots+1, obsidian_robots, geode_robots],
                           [new_ore-f.clay_cost, new_clay, new_obsidian, new_geode]))
             if f.obsidian_cost[0] <= ore and f.obsidian_cost[1] <= clay:
@@ -91,8 +91,7 @@ def main(filename):
 
             # Also consider building no robots
             # it doesn't make sense to store up more ore than is needed for the highest ore cost robot
-            if ore <= highest_ore_cost+1 and obsidian < f.geode_cost[1]:
-                q.append((ts+1, [ore_robots, clay_robots, obsidian_robots,
+            q.append((ts+1, [ore_robots, clay_robots, obsidian_robots,
                                  geode_robots], [new_ore, new_clay, new_obsidian, new_geode]))
 
         print("max", max_geodes)
