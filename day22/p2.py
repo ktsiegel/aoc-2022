@@ -54,10 +54,13 @@ def main(filename):
             i += 1
         instructions.append(dir)
         
-    print(instructions)
+    # print(instructions)
 
     pos = (0, init_pos_col)
     dir = "R" # L, R, U, D
+
+    print(len(grid))
+    # each side is length 50
 
     iidx = 0
     while iidx < len(instructions):
@@ -68,14 +71,35 @@ def main(filename):
                         pos = (pos[0], pos[1]+1)
                     elif pos[1]+1 == len(grid[0]) or grid[pos[0]][pos[1]+1] == " ":
                         # wrap around
-                        for wrapi in range(0, len(grid[0])):
-                            if grid[pos[0]][wrapi] != " ":
-                                poss_pos = (pos[0], wrapi)
-                                break
-                        if grid[poss_pos[0]][poss_pos[1]] == ".": 
-                            pos = poss_pos
+                        if pos[0] < 50:
+                            # goes row 149-row at the end
+                            # direction flips to left
+                            poss_pos = (149-pos[0], 99)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = "L"
+                        elif pos[0] < 100:
+                            # goes to the bottom of col 100+pos[0]-50
+                            # direction flips to up
+                            poss_pos = (99, 100+pos[0]-50)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".": 
+                                pos = poss_pos
+                                dir = "U"
+                        elif pos[0] < 150:
+                            # goes to the right of row 49-(pos[0]-100)
+                            # direction flips to left
+                            poss_pos = (49-(pos[0]-100), 149)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".": 
+                                pos = poss_pos
+                                dir = "L"
+
                         else:
-                            break
+                            # goes to the bottom of col 50+pos[0]-150
+                            # direction flips to up
+                            poss_pos = (149, 50+pos[0]-150)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".": 
+                                pos = poss_pos
+                                dir = "U"
                     else:
                         break
             elif dir == "L":
@@ -84,14 +108,34 @@ def main(filename):
                         pos = (pos[0], pos[1]-1)
                     elif pos[1]-1 < 0 or grid[pos[0]][pos[1]-1] == " ":
                         # wrap around
-                        for wrapi in range(len(grid[0])-1, -1, -1):
-                            if grid[pos[0]][wrapi] != " ":
-                                poss_pos = (pos[0], wrapi)
-                                break
-                        if grid[poss_pos[0]][poss_pos[1]] == ".": 
-                            pos = poss_pos
+                        if pos[0] < 50:
+                            # goes to col 0, row 49-pos[0]+100
+                            # direction flips to right
+                            poss_pos = (49-pos[0]+100, 0)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = "R"
+                        elif pos[0] < 100:
+                            # goes to row 100, col pos[0]-50
+                            # direction flips to down
+                            poss_pos = (100, pos[0]-50)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".": 
+                                pos = poss_pos
+                                dir = "D"
+                        elif pos[0] < 150:
+                            # goes to col 50, row 49-(pos[0]-100)
+                            # direction flips to right
+                            poss_pos = (49-(pos[0]-100), 50)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = "R"
                         else:
-                            break
+                            # goes to row 0, col 50+pos[0]-150
+                            # direction flips to down
+                            poss_pos = (0, 50+pos[0]-150)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = "D"
                     else:
                         break
             elif dir == "U":
@@ -100,14 +144,30 @@ def main(filename):
                         pos = (pos[0]-1, pos[1])
                     elif pos[0]-1 < 0 or grid[pos[0]-1][pos[1]] == " ":
                         # wrap around
-                        for wrapi in range(len(grid)-1, -1, -1):
-                            if grid[wrapi][pos[1]] != " ":
-                                poss_pos = (wrapi, pos[1])
-                                break
-                        if grid[poss_pos[0]][poss_pos[1]] == ".": 
-                            pos = poss_pos
+                        if pos[1] < 50:
+                            # goes to row 50+pos[1], col 50
+                            # direction flips to right
+                            poss_pos = (50+pos[1], 50)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = "R"
+                        elif pos[1] < 100:
+                            print("here")
+                            # goes to row pos[0]-50+150, col 0
+                            # direction flips to right
+                            poss_pos = (pos[1]-50+150, 0)
+                            print(poss_pos)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".": 
+                                pos = poss_pos
+                                dir = "R"
+                        elif pos[1] < 150:
+                            # goes to row 199, col pos[1]-100
+                            # direction stays up
+                            poss_pos = (199, pos[1]-100)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
                         else:
-                            break
+                            raise Exception("oops")
                     else:
                         break
             elif dir == "D":
@@ -116,14 +176,28 @@ def main(filename):
                         pos = (pos[0]+1, pos[1])
                     elif pos[0]+1 == len(grid) or grid[pos[0]+1][pos[1]] == " ":
                         # wrap around
-                        for wrapi in range(0, len(grid)):
-                            if grid[wrapi][pos[1]] != " ":
-                                poss_pos = (wrapi, pos[1])
-                                break
-                        if grid[poss_pos[0]][poss_pos[1]] == ".": 
-                            pos = poss_pos
+                        if pos[1] < 50:
+                            # goes to row 0, col 100+pos[1]
+                            # direction stays down
+                            poss_pos = (0, 100+pos[1])
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                        elif pos[1] < 100:
+                            # goes to row pos[1]-50+150, col 49
+                            # direction changes to left
+                            poss_pos = (pos[1]-50+150, 49)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = "L"
+                        elif pos[1] < 150:
+                            # goes to row pos[1]-100+50, col 99
+                            # direction changes to left
+                            poss_pos = (pos[1]-100+50, 99)
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = "L"
                         else:
-                            break
+                            raise Exception("oops")
                     else:
                         break
             else:
@@ -155,13 +229,15 @@ def main(filename):
             else:
                 raise Exception("Invalid direction")
 
-        # for gi in range(len(grid)):
-        #     g = grid[gi]
-        #     s = ''.join(g)
-        #     if gi == pos[0]:
-        #         s = s[0:pos[1]] + "X" + s[pos[1]+1:]
-        #     print(s)
-        # print("\n")
+        print(instructions[iidx])
+        for gi in range(len(grid)):
+            g = grid[gi]
+            s = ''.join(g)
+            if gi == pos[0]:
+                s = s[0:pos[1]] + "X" + s[pos[1]+1:]
+            print(s)
+        print("\n")
+        breakpoint()
         iidx += 1
 
     facing = 0
