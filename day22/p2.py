@@ -1,5 +1,6 @@
 from sys import argv
 
+first = False
 
 def main(filename):
     # Read the input file
@@ -62,6 +63,10 @@ def main(filename):
     print(len(grid))
     # each side is length 50
 
+    N = 50
+    if first:
+        N = 4
+
     iidx = 0
     while iidx < len(instructions):
         if type(instructions[iidx]) == int:
@@ -72,43 +77,61 @@ def main(filename):
                     break
                 if dir == "R":
                     if pos[1]+1 < len(grid[0]) and grid[pos[0]][pos[1]+1] == ".":
+                        print("moving")
+                        print(dir, pos)
                         pos = (pos[0], pos[1]+1)
+                        print(dir, pos)
                     elif pos[1]+1 == len(grid[0]) or grid[pos[0]][pos[1]+1] == " ":
                         # wrap around
-                        if pos[0] < 50:
+                        if pos[0] < N:
                             # goes row 149-row at the end
                             # direction flips to left
                             b = True
                             print(dir, pos)
-                            poss_pos = (149-pos[0], 99)
+                            if first:
+                                new_dir = "L"
+                                poss_pos = (3-pos[0]+8, 15)
+                            else: 
+                                new_dir = "L"
+                                poss_pos = (149-pos[0], 99)
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
-                                dir = "L"
+                                dir = new_dir
                             else:
                                 stop = True
                             print(dir, pos)
 
-                        elif pos[0] < 100:
+                        elif pos[0] < 2*N:
                             # goes to the bottom of col 100+pos[0]-50
                             # direction flips to up
                             print(dir, pos)
                             b = True
-                            poss_pos = (99, 100+pos[0]-50)
+                            if first:
+                                poss_pos = (8, 7-pos[0]+12)
+                                new_dir = "D"
+                            else:
+                                poss_pos = (49, 100+pos[0]-50)
+                                new_dir = "U"
                             if grid[poss_pos[0]][poss_pos[1]] == ".": 
                                 pos = poss_pos
-                                dir = "U"
+                                dir = new_dir
                             else:
                                 stop = True
                             print(dir, pos)
-                        elif pos[0] < 150:
+                        elif pos[0] < 3*N:
                             # goes to the right of row 49-(pos[0]-100)
                             # direction flips to left
                             print(dir, pos)
                             b = True
-                            poss_pos = (49-(pos[0]-100), 149)
+                            if first:
+                                poss_pos = (3-(poss[0]-8), 11), 
+                                new_dir =  "L"
+                            else:
+                                poss_pos = (49-(pos[0]-100), 149)
+                                new_dir = "L"
                             if grid[poss_pos[0]][poss_pos[1]] == ".": 
                                 pos = poss_pos
-                                dir = "L"
+                                dir = new_dir
                             else:
                                 stop = True
                             print(dir, pos)
@@ -129,42 +152,60 @@ def main(filename):
                         break
                 elif dir == "L":
                     if pos[1]-1 >= 0 and grid[pos[0]][pos[1]-1] == ".":
+                        print("moving")
+                        print(dir, pos)
                         pos = (pos[0], pos[1]-1)
+                        print(dir, pos)
                     elif pos[1]-1 < 0 or grid[pos[0]][pos[1]-1] == " ":
                         # wrap around
-                        if pos[0] < 50:
+                        if pos[0] < N:
                             print(dir, pos)
                             b = True
                             # goes to col 0, row 49-pos[0]+100
                             # direction flips to right
-                            poss_pos = (49-pos[0]+100, 0)
+                            if first:
+                                poss_pos = (4, pos[0]+4)
+                                new_dir = "D"
+                            else:
+                                poss_pos = (49-pos[0]+100, 0)
+                                new_dir = "R"
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
-                                dir = "R"
+                                dir = new_dir
                             else:
                                 stop = True
                             print(dir, pos)
-                        elif pos[0] < 100:
+                        elif pos[0] < 2*N:
                             # goes to row 100, col pos[0]-50
                             # direction flips to down
                             print(dir, pos)
                             b = True
-                            poss_pos = (100, pos[0]-50)
+                            if first:
+                                poss_pos = (11, 15-(pos[0]-4))
+                                new_dir = "U"
+                            else:
+                                poss_pos = (100, pos[0]-50)
+                                new_dir = "D"
                             if grid[poss_pos[0]][poss_pos[1]] == ".": 
                                 pos = poss_pos
-                                dir = "D"
+                                dir = new_dir
                             else:
                                 stop = True
                             print(dir, pos)
-                        elif pos[0] < 150:
+                        elif pos[0] < 3*N:
                             # goes to col 50, row 49-(pos[0]-100)
                             # direction flips to right
                             print(dir, pos)
                             b = True
-                            poss_pos = (49-(pos[0]-100), 50)
+                            if first:
+                                poss_pos = (7, 7-(pos[1]-8))
+                                new_dir = "U"
+                            else: 
+                                poss_pos = (49-(pos[0]-100), 50)
+                                new_dir = "R"
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
-                                dir = "R"
+                                dir = new_dir
                             else:
                                 stop = True
                             print(dir, pos)
@@ -187,38 +228,65 @@ def main(filename):
                         pos = (pos[0]-1, pos[1])
                     elif pos[0]-1 < 0 or grid[pos[0]-1][pos[1]] == " ":
                         # wrap around
-                        if pos[1] < 50:
+                        if pos[1] < N:
                             # goes to row 50+pos[1], col 50
                             # direction flips to right
                             print(dir, pos)
                             b = True
-                            poss_pos = (50+pos[1], 50)
+                            if first:
+                                poss_pos = (0, 11-pos[0])
+                                poss_dir = "D"
+                            else:
+                                poss_pos = (50+pos[1], 50)
+                                poss_dir = "R"
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
-                                dir = "R"
+                                dir = poss_dir
                             else:
                                 stop = True
                             print(dir, pos)
-                        elif pos[1] < 100:
+                        elif pos[1] < 2*N:
                             # goes to row pos[0]-50+150, col 0
                             # direction flips to right
                             print(dir, pos)
                             b = True
-                            poss_pos = (pos[1]-50+150, 0)
+                            if first:
+                                poss_pos = (pos[1]-4, 8)
+                                poss_dir = "R"
+                            else:
+                                poss_pos = (pos[1]-50+150, 0)
+                                poss_dir = "R"
                             if grid[poss_pos[0]][poss_pos[1]] == ".": 
                                 pos = poss_pos
-                                dir = "R"
+                                dir = poss_dir
                             else:
                                 stop = True
                             print(dir, pos)
-                        elif pos[1] < 150:
+                        elif pos[1] < 3*N:
                             # goes to row 199, col pos[1]-100
                             # direction stays up
                             print(dir, pos)
                             b = True
-                            poss_pos = (199, pos[1]-100)
+                            if first:
+                                poss_pos = (4, 3-(pos[1]-8))
+                                poss_dir = "D"
+                            else:
+                                poss_pos = (199, pos[1]-100)
+                                poss_dir = "U"
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
+                                dir = poss_dir
+                            else:
+                                stop = True
+                            print(dir, pos)
+                        elif first:
+                            print(dir, pos)
+                            b = True
+                            poss_pos = (7-(pos[1]-12), 11)
+                            poss_dir = "L"
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = poss_dir
                             else:
                                 stop = True
                             print(dir, pos)
@@ -228,41 +296,70 @@ def main(filename):
                         break
                 elif dir == "D":
                     if pos[0]+1 < len(grid) and grid[pos[0]+1][pos[1]] == ".":
+                        print("moving")
+                        print(dir, pos)
                         pos = (pos[0]+1, pos[1])
+                        print(dir, pos)
                     elif pos[0]+1 == len(grid) or grid[pos[0]+1][pos[1]] == " ":
                         # wrap around
-                        if pos[1] < 50:
+                        if pos[1] < N:
                             print(dir, pos)
                             b = True
                             # goes to row 0, col 100+pos[1]
                             # direction stays down
-                            poss_pos = (0, 100+pos[1])
+                            if first:
+                                poss_pos = (11, 11-pos[1])
+                                poss_dir = "U"
+                            else:
+                                poss_pos = (0, 100+pos[1])
+                                poss_dir = "D"
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
+                                dir = poss_dir
                             else:
                                 stop = True
                             print(dir, pos)
-                        elif pos[1] < 100:
+                        elif pos[1] < 2*N:
                             # goes to row pos[1]-50+150, col 49
                             # direction changes to left
                             print(dir, pos)
                             b = True
-                            poss_pos = (pos[1]-50+150, 49)
+                            if first:
+                                poss_pos = (11-(pos[1]-4), 8)
+                                poss_dir = "R"
+                            else:
+                                poss_pos = (pos[1]-50+150, 49)
+                                poss_dir = "L"
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
-                                dir = "L"
+                                dir = poss_dir
                             else:
                                 stop = True
                             print(dir, pos)
-                        elif pos[1] < 150:
+                        elif pos[1] < 3*N:
                             # goes to row pos[1]-100+50, col 99
                             # direction changes to left
                             print(dir, pos)
                             b = True
-                            poss_pos = (pos[1]-100+50, 99)
+                            if first:
+                                poss_pos = (7, 3-(pos[1]-8))
+                                poss_dir = "U"
+                            else:
+                                poss_pos = (pos[1]-100+50, 99)
+                                poss_dir = "L"
                             if grid[poss_pos[0]][poss_pos[1]] == ".":
                                 pos = poss_pos
-                                dir = "L"
+                                dir = poss_dir
+                            else:
+                                stop = True
+                            print(dir, pos)
+                        elif first:
+                            print(dir, pos)
+                            poss_pos = (4+(pos[1]-12), 0)
+                            poss_dir = "R"
+                            if grid[poss_pos[0]][poss_pos[1]] == ".":
+                                pos = poss_pos
+                                dir = poss_dir
                             else:
                                 stop = True
                             print(dir, pos)
@@ -302,14 +399,15 @@ def main(filename):
         # print(instructions[iidx])
         
         iidx += 1
-        # if b:
-            # for gi in range(len(grid)):
-            #     g = grid[gi]
-            #     s = ''.join(g)
-            #     if gi == pos[0]:
-            #         s = s[0:pos[1]] + "X" + s[pos[1]+1:]
-            #     print(s)
-            # print("\n")
+        # if True:
+        #     print(pos)
+        #     for gi in range(len(grid)):
+        #         g = grid[gi]
+        #         s = ''.join(g)
+        #         if gi == pos[0]:
+        #             s = s[0:pos[1]] + "X" + s[pos[1]+1:]
+        #         print(s)
+        #     print("\n")
             # breakpoint()
         b = False
         
