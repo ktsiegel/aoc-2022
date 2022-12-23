@@ -73,8 +73,9 @@ def main(filename):
     printElves(elves)
 
     i = 0
-    while i < 10:
+    while True:
         dests = dict() # maps next destination to elves that want to move there
+        newelves = set()
         for elf in elves:
             # calculate where elf is going
             hasElf = False
@@ -86,28 +87,46 @@ def main(filename):
                 if hasElf:
                     break
             if not hasElf:
+                newelves.add(elf)
                 continue
             if i % 4 == 0:
                 if checkNorth(elf, elves, dests) or checkSouth(elf, elves, dests) or checkWest(elf, elves, dests) or checkEast(elf, elves, dests):
                     continue
+                else:
+                    newelves.add(elf)
             elif i % 4 == 1:
                 if checkSouth(elf, elves, dests) or checkWest(elf, elves, dests) or checkEast(elf, elves, dests) or checkNorth(elf, elves, dests):
                     continue
+                else:
+                    newelves.add(elf)
             elif i % 4 == 2:
                 if checkWest(elf, elves, dests) or checkEast(elf, elves, dests) or checkNorth(elf, elves, dests) or checkSouth(elf, elves, dests):
                     continue
+                else:
+                    newelves.add(elf)
             elif i % 4 == 3:
                 if checkEast(elf, elves, dests) or checkNorth(elf, elves, dests) or checkSouth(elf, elves, dests) or checkWest(elf, elves, dests):
                     continue
+                else:
+                    newelves.add(elf)
 
         # move elves
         for dest in dests:
             # if there is only one elf that wants to move there, then move
             if len(dests[dest]) == 1:
-                elves.remove(dests[dest][0])
-                elves.add(dest)
+                # elves.remove(dests[dest][0])
+                newelves.add(dest)
             # otherwise don't move
+            else:
+                for d in dests[dest]:
+                    newelves.add(d)
         i += 1
+
+        if len(elves.intersection(newelves)) == len(elves):
+            print(i)
+            return
+        elves = newelves
+
 
         # printElves(elves)
         # breakpoint()
