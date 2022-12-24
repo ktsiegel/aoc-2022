@@ -121,9 +121,10 @@ def solve(grid, initial_pos, dest_pos, backwards):
         # for tline in max_times:
         #     print(tline)
         # print("\n")
-        if t+1 >= len(memoized_grids):
+        midx = (t+1) % memo_div
+        if midx >= len(memoized_grids):
             mi = len(memoized_grids)
-            while mi <= t+1:
+            while mi <= midx:
                 memoized_grids.append(increment_grid_time(memoized_grids[mi-1]))
                 mi += 1
         # print_grid(memoized_grids[t+1], x, y)
@@ -132,44 +133,44 @@ def solve(grid, initial_pos, dest_pos, backwards):
 
         if not backwards:
             # move up
-            if x > 0 and grid[x-1][y] != "#" and len(memoized_grids[t+1][x-1][y]) == 0:
+            if x > 0 and grid[x-1][y] != "#" and len(memoized_grids[midx][x-1][y]) == 0:
                 q.append((x-1, y, t+1))
 
             # stay in place
-            if len(memoized_grids[t+1][x][y]) == 0:
+            if len(memoized_grids[midx][x][y]) == 0:
                 q.append((x, y, t+1))
 
             # move left
-            if grid[x][y-1] != "#" and len(memoized_grids[t+1][x][y-1]) == 0:
+            if grid[x][y-1] != "#" and len(memoized_grids[midx][x][y-1]) == 0:
                 q.append((x, y-1, t+1))
 
             # move down
-            if x < len(grid)-1 and grid[x+1][y] != "#" and len(memoized_grids[t+1][x+1][y]) == 0:
+            if x < len(grid)-1 and grid[x+1][y] != "#" and len(memoized_grids[midx][x+1][y]) == 0:
                 q.append((x+1, y, t+1))
 
             # move right
-            if grid[x][y+1] != "#" and len(memoized_grids[t+1][x][y+1]) == 0:
+            if grid[x][y+1] != "#" and len(memoized_grids[midx][x][y+1]) == 0:
                 q.append((x, y+1, t+1))
         
         else:
             # move right
-            if grid[x][y+1] != "#" and len(memoized_grids[t+1][x][y+1]) == 0:
+            if grid[x][y+1] != "#" and len(memoized_grids[midx][x][y+1]) == 0:
                 q.append((x, y+1, t+1))
 
             # move down
-            if x < len(grid)-1 and grid[x+1][y] != "#" and len(memoized_grids[t+1][x+1][y]) == 0:
+            if x < len(grid)-1 and grid[x+1][y] != "#" and len(memoized_grids[midx][x+1][y]) == 0:
                 q.append((x+1, y, t+1))
 
             # stay in place
-            if len(memoized_grids[t+1][x][y]) == 0:
+            if len(memoized_grids[midx][x][y]) == 0:
                 q.append((x, y, t+1))
 
             # move left
-            if grid[x][y-1] != "#" and len(memoized_grids[t+1][x][y-1]) == 0:
+            if grid[x][y-1] != "#" and len(memoized_grids[midx][x][y-1]) == 0:
                 q.append((x, y-1, t+1))
 
             # move up
-            if x > 0 and grid[x-1][y] != "#" and len(memoized_grids[t+1][x-1][y]) == 0:
+            if x > 0 and grid[x-1][y] != "#" and len(memoized_grids[midx][x-1][y]) == 0:
                 q.append((x-1, y, t+1))
 
 
