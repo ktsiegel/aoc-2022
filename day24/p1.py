@@ -93,29 +93,18 @@ def main(filename):
         if x == len(grid)-1 and y == len(grid[0])-2:
             if min_t == -1 or t < min_t:
                 min_t = t
-            # print("Found it!")
-            # print(t)
 
-        # print_grid(memoized_grids[t], x, y)
         memo_key = (x, y, t % memo_div)
-        # print(memo_key)
         if memo_key not in max_times:
             max_times[memo_key] = t
         elif max_times[memo_key] < t+1:
             continue
 
-        # for tline in max_times:
-        #     print(tline)
-        # print("\n")
         if t+1 >= len(memoized_grids):
             mi = len(memoized_grids)
             while mi <= t+1:
                 memoized_grids.append(increment_grid_time(memoized_grids[mi-1]))
                 mi += 1
-        # print_grid(memoized_grids[t+1], x, y)
-        # breakpoint()
-
-
 
         # move up
         if x > 0 and grid[x-1][y] != "#" and len(memoized_grids[t+1][x-1][y]) == 0:

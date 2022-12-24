@@ -1,4 +1,5 @@
 from sys import argv
+import time
 
 def print_grid(grid, x, y):
     for i in range(len(grid)):
@@ -57,6 +58,7 @@ def increment_grid_time(grid):
     return next
             
 def main(filename):
+    start_time = time.time()
     # Read the input file
     with open(filename, "r") as f:
         input = [x.strip() for x in f.readlines()]
@@ -77,14 +79,13 @@ def main(filename):
     finish = (len(grid)-1, len(grid[0])-2)
 
     (min_t, memoized_min_t) = solve(grid, (0,1,0), finish, False)
-    print(min_t)
 
     (next_min_t, next_memoized_min_t) = solve(memoized_min_t, (finish[0], finish[1], 0), (0,1), True)
-    print(next_min_t)
 
     (final_min_t, final_memoized_min_t) = solve(next_memoized_min_t, (initial_pos[0], initial_pos[1], 0), finish, False)
 
     print(min_t + next_min_t + final_min_t)
+    print("--- %s seconds ---" % (time.time() - start_time))
     
 
 
@@ -107,29 +108,19 @@ def solve(grid, initial_pos, dest_pos, backwards):
         if x == dest_pos[0] and y == dest_pos[1]:
             if min_t == -1 or t < min_t:
                 min_t = t
-            # print("Found it!")
-            # print(t)
 
-        # print_grid(memoized_grids[t], x, y)
         memo_key = (x, y, t % memo_div)
-        # print(memo_key)
         if memo_key not in max_times:
             max_times[memo_key] = t
         elif max_times[memo_key] < t+1:
             continue
 
-        # for tline in max_times:
-        #     print(tline)
-        # print("\n")
         midx = (t+1) % memo_div
         if midx >= len(memoized_grids):
             mi = len(memoized_grids)
             while mi <= midx:
                 memoized_grids.append(increment_grid_time(memoized_grids[mi-1]))
                 mi += 1
-        # print_grid(memoized_grids[t+1], x, y)
-        # breakpoint()
-
 
         if not backwards:
             # move up
