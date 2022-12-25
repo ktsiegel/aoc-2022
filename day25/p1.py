@@ -39,7 +39,6 @@ def main(filename):
         if ans >= -1*bound and ans <= bound:
             snafu_ans += "0"
         elif ans < 0:
-            # want to land in between -5**(place-1) and 5**(place-1)
             if ans+5**place >= -1*bound and ans+5**place <= bound:
                 snafu_ans += "-"
                 ans += 5**place
@@ -56,10 +55,6 @@ def main(filename):
     print(snafu_ans, ans)
 
         
-
-
-
-
 if __name__ == "__main__":
     main(argv[1])
 
